@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style media="screen">
+			.test{
+				list-style: none;
+			}
+		</style>
+		<script src="//cdn.bootcss.com/lodash.js/4.6.1/lodash.js"></script>
+		<script src="//cdn.bootcss.com/jquery/2.2.1/jquery.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				var menu = new $.fwMenu({
+					debug: true,
+					node: $("#menu"),
+					handleHtml: function(topMenus, getSonMenus){
+						console.log(topMenus);
+						console.log("================");
+						console.log(getSonMenus(1));
+						return "<ul class='test'><li>test</li><li>test</li></ul>";
+					}
+				}, function(instance){
+					console.log($(".test").html());
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div id="menu"></div>
+	</body>
+</html>
