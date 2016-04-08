@@ -58,8 +58,9 @@ webpack --display-error-details
 
 ```
 \
+|---build	编译生成的文件夹
 |---mock  
-|			|---myAcl.json 用来模拟后端服务响应
+|		|---myAcl.json 用来模拟后端服务响应
 |			
 |---modules	模块文件夹
 |			|---a  模块a
@@ -124,3 +125,21 @@ webpack --display-error-details
 
 
 具体实现细节，推荐看项目的[boot.js代码](https://github.com/kazaff/menuIfShow/blob/master/boot.js)。
+
+### 关于webpack编译
+
+为了方便开发，每次修改modules中的config.js文件或html文件，webpack都会自动重新编译，并将最新结果放在build中。但并不完美。
+
+#### Todo
+
+目前不支持自动编译的操作如下：
+
+- 非config.js，css，img等所需的资源文件，如果需要新增、编辑、删除该部分资源，不会触发自动编译
+
+#### 推荐工作流程
+
+1. 先根据需要在modules中建立好模块结构（包括要用到的config.js和html文件）
+2. 执行`webpack -w`命令，进行日常开发工作
+3. 每当不满足自动触发编译条件的事情发生时，先删除bulid文件夹，再手动重新执行`webpack -w`命令
+
+该工作流程如果不满足你的需要，请自行完善。（PS：我是真的不了解webpack！！！抱歉~）

@@ -1,4 +1,4 @@
-var initConfig = require("./config.js");	//加载配置文件
+var initConfig = require("./tmp/config.js");	//加载配置文件
 
 ;(function($){
 	var finalConfig = [];	//表示根据用户权限配置处理过的config
