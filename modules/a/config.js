@@ -3,7 +3,7 @@ module.exports = [
 		link_id: 1,
 		key: "menu_root",
 		order: 1,
-		isDir: true,
+		isDir: true,	//表示该配置项为顶级菜单
 		icon: "",
 		className: "",
 		style: ""

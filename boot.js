@@ -13,7 +13,7 @@ var initConfig = require("./config.js");	//加载配置文件
 	 * 初始化realConfig，代表前端系统已经得到当前登录用户的权限配置
 	 * options:
 	 *  {
-	 *		rebuild: bool，表示是否无视缓存重新初始化所有数据，用于用户重新登录，默认为false
+	 *		debug: bool，表示是否无视缓存重新初始化所有数据，默认为false，可用于用户重新登录
 	 *		node: jquery对象，表示主菜单dom，例如：$("#menu")
 	 *		handleHtml: func(topMenus, sonMenus function(topMenuId))，用来创建menu html string，例如： function(data)，参数data代表finalConfig
 	 *    userToken: func，用来获取当前登录用户的sessionid

@@ -1,13 +1,17 @@
 {
-  "name": "menu-demo",
+  "name": "menu-if-show",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "kazaff",
-  "license": "ISC",
+	"author": {
+    "name": "kazaff",
+    "email": "edisondik@163.com",
+    "url": "http://blog.kazaff.me"
+  },
+  "license": "MIT",
   "devDependencies": {
     "babel": "^6.5.2",
     "babel-cli": "^6.6.5",
