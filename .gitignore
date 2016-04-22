@@ -27,7 +27,9 @@ build/Release
 node_modules
 
 build
-
+!tmp/
 tmp/**
+!assets/
+assets/**
 
 .DS_Store

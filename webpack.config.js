@@ -28,6 +28,9 @@ var plugins = [
 				return iWant;
 			});
 
+			//拷贝assets文件夹到build中
+			copyDir.sync("./assets", "./build/assets");
+
 			//获取当前所有需要处理的config文件位置
 			var paths  = [];
 			walk.sync("./modules/", function(path, stat){
