@@ -121,7 +121,7 @@ webpack --display-error-details
 该插件，还提供了三个方法：
 
 * getLinkById(id) : 根据给定操作编号，返回操作对应的json数据，用于非菜单的情况下获取操作链接信息（例如按钮）
-* getLinkByAddress(prefix) : 根据地址栏url来返回对应的菜单项json数据，用于根据地址栏来控制对应菜单项的显示状态（例如展开，高亮等）
+* getLinkByAddress() : 根据地址栏url来返回对应的菜单项json数据，用于根据地址栏来控制对应菜单项的显示状态（例如展开，高亮等）
 * rebuildMenu(handle) : 重新构建menuHtml，根据handle处理函数重新生成menuHtml（用于多语言切换等场景）
 
 

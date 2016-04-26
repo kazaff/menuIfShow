@@ -134,13 +134,14 @@ var initConfig = require("./tmp/config.js");	//加载配置文件
 	};
 
 	//根据地址栏url来返回对应的菜单项json数据，用于根据地址栏来控制对应菜单项的显示状态（例如展开，高亮等）
-	$.fwMenu.prototype.getLinkByAddress = function(prefix){	//参数表示要忽略的url前缀
+	$.fwMenu.prototype.getLinkByAddress = function(){
 		console.log("getLinkByUrl");
 
 		if(!configState)
 			throw "未初始化完毕";
 
-		var link_url = _.split(window.location.pathname, prefix)[1];
+		var link_url = window.location.protocol+"//"+window.location.host+(window.location.port===80?"80":window.location.port)+window.location.pathname;
+		console.log(link_url);
 		if(!_.endsWith(link_url, ".html")){
 			link_url += "index.html";
 		}
