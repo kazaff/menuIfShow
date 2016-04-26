@@ -38,7 +38,7 @@ var plugins = [
 					paths.push(path);
 				}
 			});
-			//console.log(paths);
+
 			//检查是不是每个模块都有配置文件
 			var moduleCount = 0;
 			walk.sync("./modules/", {no_recurse: true}, function(path, stat){
@@ -124,7 +124,8 @@ _(paths).forEach(function(path){
 module.exports = {
 	entry: {
 		Boot: './boot.js',
-		TempConfig: configs
+		TempConfig: configs,
+		Another: './init.js',
 	},
 	output: {
 		path: "build",
