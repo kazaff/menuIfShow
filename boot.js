@@ -51,20 +51,22 @@ var initConfig = require("./tmp/config.js");	//加载配置文件
 			},
 		}, options);
 
+		//处理finalConfig
+		//检查sessionStorage中是否已经存在finalConfig
+		finalConfig = callerWant.debug?null:JSON.parse(sessionStorage.getItem("finalConfig"));
+
 		//检查sessionStorage中是否已经存在menuHtml
 		var menuHtml = callerWant.debug?null:sessionStorage.getItem("menuHtml");
 		if(menuHtml !== null){
 			//直接使用缓存数据
 			callerWant.node.html(menuHtml);
+			configState = true;	//表明初始化完毕
 			callback();
 			return;
 
 		}else{
 			console.log("开始生成menuHtml");
 
-			//处理finalConfig
-			//检查sessionStorage中是否已经存在finalConfig
-			finalConfig = callerWant.debug?null:JSON.parse(sessionStorage.getItem("finalConfig"));
 			if(finalConfig !== null){//直接使用缓存数据
 				//使用调用者提供的生成菜单html函数来生成menu html string
 				menuHtml = callerWant.handleHtml(_.orderBy(_.filter(_.clone(finalConfig), {isDir: true}), ["order"], ["asc"]), _.curry(getSonMenus)(_.clone(finalConfig)));
