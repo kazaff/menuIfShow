@@ -14,6 +14,7 @@ var initConfig = require("./tmp/config.js");	//加载配置文件
 	 * options:
 	 *  {
 	 *		debug: bool，表示是否无视缓存重新初始化所有数据，默认为false，可用于用户重新登录
+	 *		aclFree: bool，表示不需要权限绑定，仅仅根据配置文件返回相关操作数据 
 	 *		node: jquery对象，表示主菜单dom，例如：$("#menu")
 	 *		handleHtml: func(topMenus, sonMenus function(topMenuId))，用来创建menu html string，例如： function(data)，参数data代表finalConfig
 	 *    userToken: func，用来获取当前登录用户的sessionid
@@ -28,6 +29,7 @@ var initConfig = require("./tmp/config.js");	//加载配置文件
 		//默认参数
 		callerWant = $.extend({}, {
 			debug: false,
+			aclFree: false,
 			userToken: function(){
 					return sessionStorage.getItem("token");
 			},
@@ -80,6 +82,11 @@ var initConfig = require("./tmp/config.js");	//加载配置文件
 				console.log("开始生成finalConfig");
 
 				finalConfig = initConfig;
+				if(callerWant.aclFree){
+					configState = true;	//表明初始化完毕
+					callback();
+					return;
+				}
 
 				callerWant.fetch().done(function(data){
 					console.log("成功获取用户权限配置");

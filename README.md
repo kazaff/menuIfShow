@@ -112,6 +112,7 @@ webpack --display-error-details
 初始化时所需的参数描述：
 
 * debug: bool，表示是否无视缓存重新初始化所有数据，默认为false，可用于用户重新登录
+* aclFree: bool，表示不需要权限绑定，仅仅根据配置文件返回相关操作数据 
 *	node: jquery对象，表示主菜单dom，必填项，例如：$("#menu")
 *	handleHtml: func(topMenus, sonMenus function(topMenuId))，用来创建menu html string，必填项，例如： function(data)，参数data代表finalConfig
 * userToken: func，用来获取当前登录用户的sessionid
