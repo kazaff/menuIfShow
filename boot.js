@@ -83,6 +83,12 @@ var initConfig = require("./tmp/config.js");	//加载配置文件
 
 				finalConfig = initConfig;
 				if(callerWant.aclFree){
+					//缓存得到的用户权限菜单配置
+					sessionStorage.setItem("finalConfig", JSON.stringify(finalConfig));
+					//使用调用者提供的生成菜单html函数来生成menu html string
+					menuHtml = callerWant.handleHtml(_.orderBy(_.filter(_.clone(finalConfig), {isDir: true}), ["order"], ["asc"]), _.curry(getSonMenus)(_.clone(finalConfig)));
+					sessionStorage.setItem("menuHtml", menuHtml);	//缓存生成的menu html string
+					callerWant.node.html(menuHtml);	//将html塞入指定的dom中
 					configState = true;	//表明初始化完毕
 					callback();
 					return;
@@ -149,7 +155,7 @@ var initConfig = require("./tmp/config.js");	//加载配置文件
 		if(!configState)
 			throw "未初始化完毕";
 
-		var link_url = window.location.protocol+"//"+window.location.host+(window.location.port===80?"80":window.location.port)+window.location.pathname;
+		var link_url = window.location.protocol+"//"+window.location.host+window.location.pathname;
 		console.log(link_url);
 		if(!_.endsWith(link_url, ".html")){
 			link_url += "index.html";
