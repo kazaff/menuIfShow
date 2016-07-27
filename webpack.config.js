@@ -3,9 +3,12 @@ var p = require("path");
 var copyDir = require("copy-dir");
 var fs = require("fs");
 var _ = require("lodash");
+var fileMd5 = require('file-md5');
 
 var Webpack = require("webpack");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
+
+var domain = require("./config.js").domain;
 
 var oldConfig;
 
@@ -70,6 +73,31 @@ var plugins = [
 				throw "项目配置文件中link_id存在冲突";
 			}
 			tmpConfigs = null;
+
+			//htmlMd5计算html文件签名的时机
+			var htmlMd5Router = {};
+			walk.sync("./modules/", function(path, stat){
+				if(p.extname(path) === ".html"){
+					var key = p.relative(p.resolve("./modules/"), path);
+					if(p.sep === "\\"){
+						key = key.replace(/\\/g, '/');
+					}
+					htmlMd5Router[key] = fileMd5(path);
+				}
+			});
+
+			console.log(htmlMd5Router);
+
+			//htmlMd5二次处理config内容的时机
+			console.log(configs);
+			_(htmlMd5Router).forEach(function(md5, html){
+				var index = _.findIndex(configs, {"link_url": domain+html});
+				console.log(index);
+				if(index>0){
+					configs[index].link_url = domain+html+'?v='+md5+"&";
+				}
+			});
+			console.log(configs);
 
 			//根据内容生成总config.js
 			var jsonConfigs = JSON.stringify(configs)
