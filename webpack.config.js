@@ -88,9 +88,19 @@ var plugins = [
 
 			//htmlMd5二次处理config内容的时机
 			_(htmlMd5Router).forEach(function(md5, html){
-				var index = _.findIndex(configs, {"link_url": domain+html});
-				if(index>0){
-					configs[index].link_url = domain+html+'?v='+md5+"&";
+				var index = _.findIndex(configs, function(target){
+					if(target.link_url){
+						return target.link_url.indexOf(domain+html) === 0;
+					}else{
+						return false;
+					}
+				});
+				if(index>=0){
+					if(configs[index].link_url.indexOf('?')>=0){
+						configs[index].link_url += '&v='+md5+"&";
+					}else{
+						configs[index].link_url += '?v='+md5+"&";
+					}
 				}
 			});
 
