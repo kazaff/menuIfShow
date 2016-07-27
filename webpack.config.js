@@ -86,18 +86,13 @@ var plugins = [
 				}
 			});
 
-			console.log(htmlMd5Router);
-
 			//htmlMd5二次处理config内容的时机
-			console.log(configs);
 			_(htmlMd5Router).forEach(function(md5, html){
 				var index = _.findIndex(configs, {"link_url": domain+html});
-				console.log(index);
 				if(index>0){
 					configs[index].link_url = domain+html+'?v='+md5+"&";
 				}
 			});
-			console.log(configs);
 
 			//根据内容生成总config.js
 			var jsonConfigs = JSON.stringify(configs)
