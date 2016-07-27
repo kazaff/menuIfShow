@@ -112,7 +112,7 @@ webpack --display-error-details
 初始化时所需的参数描述：
 
 * debug: bool，表示是否无视缓存重新初始化所有数据，默认为false，可用于用户重新登录
-* aclFree: bool，表示不需要权限绑定，仅仅根据配置文件返回相关操作数据 
+* aclFree: bool，表示不需要权限绑定，仅仅根据配置文件返回相关操作数据
 *	node: jquery对象，表示主菜单dom，必填项，例如：$("#menu")
 *	handleHtml: func(topMenus, sonMenus function(topMenuId))，用来创建menu html string，必填项，例如： function(data)，参数data代表finalConfig
 * userToken: func，用来获取当前登录用户的sessionid
@@ -146,3 +146,11 @@ webpack --display-error-details
 3. 每当不满足自动触发编译条件的事情发生时，先删除bulid文件夹，再手动重新执行`webpack -w`命令
 
 该工作流程如果不满足你的需要，请自行完善。（PS：我是真的不了解webpack！！！抱歉~）
+
+---
+
+## 新增
+
+#### html文件浏览器缓存实时更新
+
+具体问题描述和解决思路可以看[这里](http://blog.kazaff.me/2016/07/26/%E4%BC%A0%E7%BB%9Fweb%E9%A1%B9%E7%9B%AE%E4%BB%A3%E7%A0%81%E5%8F%98%E6%9B%B4%E5%BC%95%E8%B5%B7%E7%9A%84%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%E5%92%8C%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF/)。
