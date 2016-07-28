@@ -88,20 +88,15 @@ var plugins = [
 
 			//htmlMd5二次处理config内容的时机
 			_(htmlMd5Router).forEach(function(md5, html){
-				var index = _.findIndex(configs, function(target){
-					if(target.link_url){
-						return target.link_url.indexOf(domain+html) === 0;
-					}else{
-						return false;
+				_(configs).forEach(function(target){
+					if(target.link_url && target.link_url.indexOf(domain+html) === 0){
+						if(target.link_url.indexOf('?')>=0){
+							target.link_url += '&v='+md5+"&";
+						}else{
+							target.link_url += '?v='+md5+"&";
+						}
 					}
 				});
-				if(index>=0){
-					if(configs[index].link_url.indexOf('?')>=0){
-						configs[index].link_url += '&v='+md5+"&";
-					}else{
-						configs[index].link_url += '?v='+md5+"&";
-					}
-				}
 			});
 
 			//根据内容生成总config.js
