@@ -74,6 +74,9 @@ var plugins = [
 			}
 			tmpConfigs = null;
 
+			// 让init.js文件的修改也影响html文件签名，该逻辑用来针对：html内容没变，但anther.js文件更改的场景
+			var initFileMD5 = fileMd5('./init.js');	// 当前的版本的文件签名
+
 			//htmlMd5计算html文件签名的时机
 			var htmlMd5Router = {};
 			walk.sync("./modules/", function(path, stat){
@@ -82,7 +85,7 @@ var plugins = [
 					if(p.sep === "\\"){
 						key = key.replace(/\\/g, '/');
 					}
-					htmlMd5Router[key] = fileMd5(path);
+					htmlMd5Router[key] = fileMd5(path) + initFileMD5;
 				}
 			});
 
@@ -126,7 +129,7 @@ var plugins = [
 	new HtmlWebpackPlugin({
 		filename: "index.html",
 		template: "./index.html",
-		excludeChunks: ['TempConfig']
+		excludeChunks: ['TempConfig']	// 排除根文件夹中的config.js文件
 	})
 ];
 
@@ -145,7 +148,7 @@ _(paths).forEach(function(path){
 	plugins.push(new HtmlWebpackPlugin({
 		filename: p.relative(p.resolve("."), path),
 		template: path,
-		excludeChunks: ['TempConfig']
+		excludeChunks: ['TempConfig']	// 排除每个模块文件夹中的config.js文件
 	}));
 });
 
@@ -172,4 +175,4 @@ module.exports = {
 		extensions: ['', '.js']
 	},
 	plugins: plugins
-}
+};
