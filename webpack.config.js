@@ -4,13 +4,12 @@ var copyDir = require("copy-dir");
 var fs = require("fs");
 var _ = require("lodash");
 var fileMd5 = require('file-md5');
+var crypto = require('crypto');
 
 var Webpack = require("webpack");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 
 var domain = require("./config.js").domain;
-
-var oldConfig;
 
 var plugins = [
 	new Webpack.BannerPlugin("by kazaff"),
@@ -77,6 +76,11 @@ var plugins = [
 			// 让init.js文件的修改也影响html文件签名，该逻辑用来针对：html内容没变，但anther.js文件更改的场景
 			var initFileMD5 = fileMd5('./init.js');	// 当前的版本的文件签名
 
+			// 让各个模块config.js文件的修改也影响html文件签名，该逻辑用来针对：html内容没变，但config.js文件更改的场景
+			// 但由于html的签名内容也会影响config.js文件改变，所以形成了一个环形依赖
+			// 为了打破这个环形依赖，我们其实只需要根据纯config的内容来生成签名即可
+			var configFileMD5 = crypto.createHash('md5').update(JSON.stringify(configs)).digest("hex");
+
 			//htmlMd5计算html文件签名的时机
 			var htmlMd5Router = {};
 			walk.sync("./modules/", function(path, stat){
@@ -85,7 +89,9 @@ var plugins = [
 					if(p.sep === "\\"){
 						key = key.replace(/\\/g, '/');
 					}
-					htmlMd5Router[key] = fileMd5(path) + initFileMD5;
+
+					// 为了避免签名太长，合并三方签名
+					htmlMd5Router[key] = crypto.createHash('md5').update(fileMd5(path) + initFileMD5 + configFileMD5).digest("hex");
 				}
 			});
 
@@ -103,11 +109,7 @@ var plugins = [
 			});
 
 			//根据内容生成总config.js
-			var jsonConfigs = JSON.stringify(configs)
-			if(oldConfig !== jsonConfigs){
-				fs.writeFileSync("./tmp/config.js", "module.exports="+JSON.stringify(configs));
-				oldConfig = jsonConfigs;
-			}
+			fs.writeFileSync("./tmp/config.js", "module.exports="+JSON.stringify(configs));
 
 			return true;
 		});
