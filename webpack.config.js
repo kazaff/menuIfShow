@@ -11,6 +11,8 @@ var HtmlWebpackPlugin = require("html-webpack-plugin");
 
 var domain = require("./config.js").domain;
 
+var oldConfig;
+
 var plugins = [
 	new Webpack.BannerPlugin("by kazaff"),
 	function(){
@@ -109,7 +111,11 @@ var plugins = [
 			});
 
 			//根据内容生成总config.js
-			fs.writeFileSync("./tmp/config.js", "module.exports="+JSON.stringify(configs));
+			var jsonConfigs = JSON.stringify(configs)
+			if(oldConfig !== jsonConfigs){
+				fs.writeFileSync("./tmp/config.js", "module.exports="+JSON.stringify(configs));
+				oldConfig = jsonConfigs;
+			}
 
 			return true;
 		});
