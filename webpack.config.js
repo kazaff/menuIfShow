@@ -11,7 +11,7 @@ var HtmlWebpackPlugin = require("html-webpack-plugin");
 
 var domain = require("./config.js").domain;
 
-var oldConfig;
+var oldConfig;	// 避免-w模式下死循环编译问题
 
 var plugins = [
 	new Webpack.BannerPlugin("by kazaff"),
@@ -112,7 +112,7 @@ var plugins = [
 
 			//根据内容生成总config.js
 			var jsonConfigs = JSON.stringify(configs)
-			if(oldConfig !== jsonConfigs){
+			if(oldConfig !== jsonConfigs){	// 避免-w模式下死循环编译问题
 				fs.writeFileSync("./tmp/config.js", "module.exports="+JSON.stringify(configs));
 				oldConfig = jsonConfigs;
 			}
