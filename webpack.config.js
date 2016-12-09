@@ -163,7 +163,7 @@ _(paths).forEach(function(path){
 module.exports = {
 	entry: {
 		Boot: './boot.js',
-		TempConfig: configs,
+		TempConfig: configs,	// 目的是让webpack能监听config.js文件的变更，否则无法触发自动编译
 		Another: './init.js',
 	},
 	output: {
