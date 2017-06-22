@@ -21,9 +21,9 @@ var plugins = [
 			//拷贝modules中所有文件到build中
 			copyDir.sync("./modules", "./build/modules", function(stat, path, file){
 				var iWant = true;
-				if(stat === "file" && p.basename(path) === "config.js"){
+				if(stat === "file" && (p.basename(path) === "config.js" || p.extname(path) === ".html")){
 					iWant = false;
-				}else if(stat === "file"){
+				}else if(stat === "file"){	// 主要针对非config.js和html文件
 					try{
 						fs.statSync("./build/"+path);
 						iWant = false;
@@ -33,7 +33,7 @@ var plugins = [
 			});
 
 			//拷贝assets文件夹到build中
-			copyDir.sync("./assets", "./build/assets");
+			//copyDir.sync("./assets", "./build/assets");
 
 			//获取当前所有需要处理的config文件位置
 			var paths  = [];

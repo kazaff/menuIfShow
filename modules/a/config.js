@@ -5,7 +5,7 @@ module.exports = [
 		key: "menu_root",
 		order: 1,
 		isDir: true,	//表示该配置项为顶级菜单
-		icon: "",
+		icon: "1",
 		className: "",
 		style: ""
 	},

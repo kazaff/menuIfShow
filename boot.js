@@ -1,3 +1,16 @@
+window.onerror = (errorMsg, url, lineNumber, colNumber, errObject) => {
+	var user = localStorage.getItem('current');
+	if(user){
+		user = JSON.parse(user).user;
+		user = user.id + '||' + user.name;
+	}
+	var params = [window.location.href, errorMsg, url, lineNumber, colNumber, user, +new Date].join('||');
+
+	var img = new Image;
+	img.onload = img.onerror = function(){img = null;};
+	img.src= 'http://jstracker.friendwell.com/jstracker.png?info=' + params;
+};
+
 var initConfig = require("./tmp/config.js");	//加载配置文件
 
 ;(function($){
