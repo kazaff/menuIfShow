@@ -142,8 +142,9 @@ webpack --display-error-details
 #### 推荐工作流程
 
 1. 先根据需要在modules中建立好模块结构（包括要用到的config.js和html文件）
-2. 执行`webpack -w`命令，进行日常开发工作
-3. 每当不满足自动触发编译条件的事情发生时，先删除bulid文件夹，再手动重新执行`webpack -w`命令
+2. 执行`npm run build`命令，进行日常开发工作
+3. 每当不满足自动触发编译条件的事情发生时，重新执行`npm run build`命令
+4. 执行`npm run package`命令打包发布线上
 
 该工作流程如果不满足你的需要，请自行完善。（PS：我是真的不了解webpack！！！抱歉~）
 
@@ -161,4 +162,6 @@ webpack --display-error-details
 
 ## 缺陷
 
-目前没有监控html依赖的第三方资源（css、img、js等）的变更版本情况，所以，凡非html文件的变更，请自行维护版本号。
+1. 目前没有监控html依赖的第三方资源（css、img、js等）的变更版本情况，所以，凡非html文件的变更，请自行维护版本号；
+2. 目前已知的bug是，第一次执行`npm run build`时会造成多次编译浪费时间，不过之后自动触发的编译正常；
+3. 项目文件多了以后，内存消耗严重，目前推荐的是只保留正在开发中的module，开发完成的module暂时移除项目。

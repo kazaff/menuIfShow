@@ -17,7 +17,7 @@ var plugins = [
 	new Webpack.BannerPlugin("by kazaff"),
 	function(){
 		this.plugin("compile", function(params){
-			console.log("编译初始化");
+			console.log("编译开始");
 			//拷贝modules中所有文件到build中
 			copyDir.sync("./modules", "./build/modules", function(stat, path, file){
 				var iWant = true;
@@ -129,11 +129,9 @@ var plugins = [
 					fs.unlinkSync(path);
 				}
 			});
+			console.log('编译完成');
 		});
 	},
-	new Webpack.WatchIgnorePlugin([
-		p.resolve(__dirname, './build/'),
-	]),
 	new HtmlWebpackPlugin({
 		filename: "index.html",
 		template: "./index.html",
@@ -161,26 +159,47 @@ _(paths).forEach(function(path){
 });
 
 module.exports = {
+	watch: false,
+	watchOptions: {
+		aggregateTimeout: 3000,
+  	poll: 1000,
+		ignored: [
+			"**/build/**",
+			"**/node_modules/**",
+			"**/.git/**",
+			"**/assets/**",
+			"**/.idea/**",
+			"**/.settings/**",
+			"**/mock/**",
+			"**/tests/**",
+		]
+	},
 	entry: {
 		Boot: './boot.js',
 		TempConfig: configs,	// 目的是让webpack能监听config.js文件的变更，否则无法触发自动编译
 		Another: './init.js',
 	},
 	output: {
-		path: "build",
+		path: p.resolve(__dirname, './build/'),
 		filename: "[name]-[chunkhash].js"
 	},
 	module:{
-		loaders: [
+		rules: [
 			{
 				test: /\.js$/,
-				loader: "babel?presets[]=es2015,plugins[]=transform-runtime",
-				exclude: [/node_modules/]
+				exclude: /(node_modules|assets|\.git|tests|mock)/,
+				use: {
+		      loader: 'babel-loader',
+		      options: {
+		        presets: ['es2015'],
+		        plugins: ['transform-runtime']
+		      }
+		    }
 			}
 		]
 	},
 	resolve: {
-		extensions: ['', '.js']
+		extensions: ['.js']
 	},
 	plugins: plugins
 };
