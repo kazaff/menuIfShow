@@ -9,11 +9,16 @@ var HtmlWebpackPlugin = require("html-webpack-plugin");
 
 var oldConfig = null;	// 避免-w模式下死循环编译问题
 
+// 目标监控目录
+var watchDir = process.argv[process.argv.length-1];
+if(watchDir === 'webpack.config.dev.js'){
+	watchDir = '';
+}
+
 var plugins = [
 	new Webpack.BannerPlugin("by kazaff"),
 	function(){
 		this.plugin("watch-run", function(compX, callback){
-			//console.log("编译开始");
 
 			// 获取当前所有需要处理的config文件位置
 			var paths  = [];
@@ -82,23 +87,22 @@ var plugins = [
 	})
 ];
 
-// 自动将编译好的boot文件注入到所有模块的html文件中
-paths  = [];
 configs = [];
 walk.sync("./modules/", function(path, stat){
-	if(p.extname(path) === ".html"){
-		paths.push(path);
-	}else if(p.basename(path) === "config.js"){
+	if(p.basename(path) === "config.js"){
 		configs.push(path);
 	}
 });
 
-_(paths).forEach(function(path){
-	plugins.push(new HtmlWebpackPlugin({
-		filename: p.relative(p.resolve("."), path),
-		template: path,
-		excludeChunks: ['TempConfig']	// 排除每个模块文件夹中的config.js文件
-	}));
+// 自动将编译好的boot文件注入到所有模块的html文件中
+walk.sync("./modules/" + watchDir, function(path, stat){
+	if(p.extname(path) === ".html"){
+		plugins.push(new HtmlWebpackPlugin({
+			filename: p.relative(p.resolve("."), path),
+			template: path,
+			excludeChunks: ['TempConfig']	// 排除每个模块文件夹中的config.js文件
+		}));
+	}
 });
 
 module.exports = {
